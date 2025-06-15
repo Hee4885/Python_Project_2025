@@ -186,7 +186,7 @@ def main_menu(screen):
 
         # 이벤트 처리 - 사용자의 행동 감지
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT: #Alt + F4 버튼을 누르면 자동으로 이 이벤트를 넘겨줌
                 show_endCheck(screen)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):

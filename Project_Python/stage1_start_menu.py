@@ -15,7 +15,7 @@ pygame.mixer.init() #사운드 시스템 초기화
 volume = 50
 
 #음악 재생
-pygame.mixer.music.load('../music/달리기.mp3')
+pygame.mixer.music.load('../music/lobbyBGM.mp3')
 pygame.mixer.music.play(-1)
 
 
@@ -90,31 +90,32 @@ def how_to_play() :
     running = True
     while running :
         screen.fill((0, 0, 0))
-        goBack_button = draw_button("Go Back", 20, 950, 170, 80)
+        goBack_button = draw_button(str("뒤로가기"), 10, 1, 150, 100)
 
         #render는 글씨로 이미지로 바꾸는 함수 (text, 곡선 부드럽게 처리, color)
         title = font.render("【게임 방법】", True, WHITE)
-        line1 = font.render("방향키로 이동:", True, WHITE)
-        line2 = font.render("↑ ↓ ← →", True, GREEN)
-        line3 = font.render("(화살표 방향별로 캐릭터 이동)", True, WHITE)
-        line4 = font.render("[F] 키: 대화 및 상호작용", True, WHITE)
-        line5 = font.render("[e] 키: 인벤토리 창 띄우기", True, WHITE)
-        line6 = font.render("space 바 : 대화 및 컷신 건너뛰기", True, WHITE)
+        line1 = font.render("이동 방법:", True, WHITE)
+        line2 = font.render("W A S D", True, GREEN)
+        line3 = font.render("[F] 키: 대화 및 상호작용", True, WHITE)
+        line4 = font.render("[e] 키: 인벤토리", True, WHITE)
+        line5 = font.render("space 바 : 대화 및 건너뛰기", True, WHITE)
 
 
 
         screen.blit(title, (WIDTH//2-50, HEIGHT//2-400))
         screen.blit(line1, (WIDTH//2-300, HEIGHT//2-200))
-        screen.blit(line2, (WIDTH//2-74, HEIGHT//2-200))
-        screen.blit(line3, (WIDTH//2+100, HEIGHT//2-200))
+        screen.blit(line2, (WIDTH//2-140, HEIGHT//2-200))
 
-        screen.blit(line4, (WIDTH//2-300, HEIGHT//2-50))
-        screen.blit(line5, (WIDTH//2-300, HEIGHT//2+100))
-        screen.blit(line6, (WIDTH//2-300, HEIGHT//2+250))
+        screen.blit(line3, (WIDTH//2-300, HEIGHT//2-50))
+        screen.blit(line4, (WIDTH//2-300, HEIGHT//2+100))
+        screen.blit(line5, (WIDTH//2-300, HEIGHT//2+250))
 
 
 
         for event in pygame.event.get(): # 발생한 이벤트를 계속 받기
+            if event.type == pygame.QUIT:
+                show_endCheck(screen)
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: # 마우스를 클릭한 이벤트면
                 if goBack_button.collidepoint(event.pos): # 클릭한 위치가 goBack 버튼이면
                     running = False # 실행 중지
@@ -128,7 +129,7 @@ def settings_menu():
         screen.fill((0, 0, 0))
         text1 = font2.render("【설정】", True, WHITE)
         text2 = font3.render(f"음량: {volume}%", True, WHITE)
-        goBack_button = draw_button("Go Back", 20,950,230,80)
+        goBack_button = draw_button(str("뒤로가기"), 10, 1, 150, 100)
 
         screen.blit(text1, (WIDTH//2-100, HEIGHT//2-400))
         screen.blit(text2, (WIDTH//2-100, HEIGHT//2))
@@ -140,7 +141,7 @@ def settings_menu():
                     running = False
 
             if event.type == pygame.QUIT:
-                pygame.quit()
+                pygame.QUIT()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
@@ -178,10 +179,10 @@ def main_menu(screen):
         screen.blit(scaled_img, (0, 0))  # 이미지 출력
 
         # 버튼 4개 생성 - 마우스 클릭 감지
-        start_button = draw_button(str("Start Game"), 400, 450, 300, 80)
-        howto_button = draw_button(str("How to Play"), 350, 560, 400, 80)
-        setting_button = draw_button(str("Settings"), 400, 670, 300, 80)
-        quit_button = draw_button(str("QUIT"), 400, 780, 300, 80)
+        start_button = draw_button(str("게임 시작"), 400, 450, 300, 80)
+        howto_button = draw_button(str("게임 방법"), 350, 560, 400, 80)
+        setting_button = draw_button(str("설정"), 400, 670, 300, 80)
+        quit_button = draw_button(str("게임 종료"), 400, 780, 300, 80)
 
 
         # 이벤트 처리 - 사용자의 행동 감지

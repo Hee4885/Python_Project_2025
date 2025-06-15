@@ -9,12 +9,16 @@ def play_cutscene(screen, show_endCheck):
     pygame.display.set_caption("컷신 예시")
     WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 
-    font = pygame.font.SysFont("malgungothic", 40)
+    font_path = '../font/HBIOS-SYS.ttf'
+    font = pygame.font.Font(font_path, 30)  # 별도 폰트 사용 시
 
     slides = [
-        {"image": pygame.image.load("../img/컷신1.jpg"), "text": "모든 일은 한 마을에서 시작되었다..."},
-        {"image": pygame.image.load("../img/컷신2.jpg"), "text": "그 마을에는 무언가... 이상한 것이 있었다."},
-        {"image": pygame.image.load("../img/컷신3.jpg"), "text": "그리고, 주인공은 그 마을로 향한다."},
+        {"image": pygame.image.load("../img/검은 배경화면.jpeg"), "text": "평화로운 시골 학교에서 일어나면 안 될 일이 일어났다."},
+        {"image": pygame.image.load("../img/최종컷신2.JPG"), "text": "어느 날... 학교의 상징과도 같은 염소가 죽어있었고 그 범인은..!"},
+        {"image": pygame.image.load("../img/검은 배경화면.jpeg"), "text": "학생이였다."},
+        {"image": pygame.image.load("../img/검은 배경화면.jpeg"), "text": "물론 이 학생은 몰랐을 것이다. 일이 이렇게 커질 줄…"},
+        {"image": pygame.image.load("../img/최종컷신4.JPG"), "text": "너네 그 얘기 들었어? 어제 그 일진이..."},
+        {"image": pygame.image.load("../img/최종컷신5.JPG"), "text": "속보입니다. 어제 저녁 미림고등학교에서는 모든 선생과 학생들이 싸늘한 주검으로 발견되어있었습니다. 이런 일은 경찰마저 당황케 하는 모습입니다."}
     ]
 
     def draw_text(text):

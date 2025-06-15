@@ -6,7 +6,7 @@ pygame.init() #파이 게임 초기화
 pygame.mixer.init() #사운드 시스템 초기화
 
 #배경음악 설정
-pygame.mixer.music.load('../music/달리기.mp3')
+pygame.mixer.music.load('../music/cutsceneBGM.mp3')
 pygame.mixer.music.play()
 
 def play_Game(screen, show_endCheck) :

@@ -2,9 +2,17 @@ import pygame
 import sys
 
 
+
 def play_cutscene(screen, show_endCheck):
     import stage3_playGame
+    pygame.mixer.music.stop()
+    pygame.mixer.init()  # 사운드 시스템 초기화
+
     print("컷신 실행")
+
+    # 음악 재생
+    pygame.mixer.music.load('../music/cutsceneBGM.mp3')
+    pygame.mixer.music.play(-1)
 
     pygame.display.set_caption("컷신 예시")
     WIDTH, HEIGHT = screen.get_width(), screen.get_height()
@@ -12,9 +20,13 @@ def play_cutscene(screen, show_endCheck):
     font = pygame.font.SysFont("malgungothic", 40)
 
     slides = [
-        {"image": pygame.image.load("../img/컷신1.jpg"), "text": "모든 일은 한 마을에서 시작되었다..."},
-        {"image": pygame.image.load("../img/컷신2.jpg"), "text": "그 마을에는 무언가... 이상한 것이 있었다."},
-        {"image": pygame.image.load("../img/컷신3.jpg"), "text": "그리고, 주인공은 그 마을로 향한다."},
+        {"image": pygame.image.load("../img/１컷.jpg"), "text": "모든 일은 평화로운 시골의 한 학교에서 시작되었다..."},
+        {"image": pygame.image.load("../img/２컷.jpg"), "text": "그곳엔 오래된 전통처럼 키우던 염소가 있었고..."},
+        {"image": pygame.image.load("../img/２컷.jpg"), "text": "양아치의 장난으로 염소가 죽은 날, 저주가 깨어났다."},
+
+        {"image": pygame.image.load("../img/３컷.jpg"), "text": "그리고, 주인공은 그 마을로 향한다."},
+        {"image": pygame.image.load("../img/４컷.jpg"), "text": "그리고, 주인공은 그 마을로 향한다."},
+
     ]
 
     def draw_text(text):
@@ -37,18 +49,17 @@ def play_cutscene(screen, show_endCheck):
         pygame.display.flip() #화면 업데이트
         clock.tick(60) #일정한 프레임 속도 제어 / 해당 루프가 1초에 60번 실행
 
-        pressed = pygame.key.get_pressed()
-
         #수동 넘김
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 show_endCheck(screen)
-            if pressed[pygame.K_SPACE] :
-                slide_index += 1
-                if slide_index >= len(slides): #마지막 슬라이드에 도달하면
-                    running = False #루프 종료
-                else:
-                    slide_start_time = pygame.time.get_ticks() #해당 슬라이드가 띄워진 시간 저장
+            if event.type == pygame.KEYDOWN :
+                if event.key == pygame.K_SPACE :
+                    slide_index += 1
+                    if slide_index >= len(slides): #마지막 슬라이드에 도달하면
+                        running = False #루프 종료
+                    else:
+                        slide_start_time = pygame.time.get_ticks() #해당 슬라이드가 띄워진 시간 저장
 
         # 2초가 지나면 다음 슬라이드로 자동 전환 - 자동 넘김(2초간격)
         if pygame.time.get_ticks() - slide_start_time > 2000: #지금 시각 - 시작 시각이 2초를 넘으면

@@ -14,9 +14,6 @@ pygame.mixer.init() #사운드 시스템 초기화
 # 초기 음량 설정 - 전역 변수
 volume = 50
 
-#음악 재생
-pygame.mixer.music.load('../music/달리기.mp3')
-pygame.mixer.music.play(-1)
 
 
 #창 기본 설정
@@ -94,9 +91,9 @@ def how_to_play() :
 
         #render는 글씨로 이미지로 바꾸는 함수 (text, 곡선 부드럽게 처리, color)
         title = font.render("【게임 방법】", True, WHITE)
-        line1 = font.render("방향키로 이동:", True, WHITE)
-        line2 = font.render("↑ ↓ ← →", True, GREEN)
-        line3 = font.render("(화살표 방향별로 캐릭터 이동)", True, WHITE)
+        line1 = font.render("[WASD] 키로 이동:", True, WHITE)
+        line2 = font.render("    ↑ ↓ ← →", True, GREEN)
+        line3 = font.render("     (화살표 방향별로 캐릭터 이동)", True, WHITE)
         line4 = font.render("[F] 키: 대화 및 상호작용", True, WHITE)
         line5 = font.render("[e] 키: 인벤토리 창 띄우기", True, WHITE)
         line6 = font.render("space 바 : 대화 및 컷신 건너뛰기", True, WHITE)
@@ -171,6 +168,11 @@ def draw_button(text,x,y,w,h) :
 
 #메인 메뉴 루프 시작
 def main_menu(screen):
+    # 음악 재생
+    pygame.mixer.music.load('../music/lobbyBGM.mp3')
+    pygame.mixer.music.play(-1)
+
+
     next_Action = None
     running = True
     while running:
@@ -192,6 +194,7 @@ def main_menu(screen):
                 if start_button.collidepoint(event.pos):
                     print("게임 시작!")
                     next_Action = "start"
+
                     running = False
                 elif howto_button.collidepoint(event.pos):
                     print("게임 방법!")
@@ -210,6 +213,7 @@ def main_menu(screen):
 action = main_menu(screen)
 
 #순환 참조 해결 방법2
-if action == "start" :
-    pygame.mixer.music.pause()
-    stage2_cutscene.play_cutscene(screen,show_endCheck)
+if action == "start":
+    print("음악 중지 완료")
+    stage2_cutscene.play_cutscene(screen, show_endCheck)
+

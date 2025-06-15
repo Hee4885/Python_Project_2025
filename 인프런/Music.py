@@ -13,8 +13,6 @@ pygame.mixer.music.play(-1)
 ourScreen = pygame.display.set_mode()
 
 # 이미지 미리 로드
-startImg = pygame.image.load('../img/시작화면1.jpg')
-
 
 img_front = pygame.image.load('../img/앞.png')
 img_front_walk1 = pygame.image.load('../img/앞_걷기1.png')

@@ -46,7 +46,7 @@ class NPC:
 npc_list = [
     NPC(
         name="수호자",
-        images=pygame.image.load('../img/npc.png'),
+        images=pygame.image.load('../img/오른쪽_걷기1.png'),
         x=500, y=300,
         dialog_lines=[
             "이곳은 금지된 숲이야...",
@@ -61,7 +61,7 @@ npc_list = [
     ),
     NPC(
         name="마을사람",
-        images=pygame.image.load('../img/npc2.png'),
+        images=pygame.image.load('../img/앞.png'),
         x=200, y=150,
         dialog_lines=[
             "여행자시군요!",

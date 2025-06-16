@@ -2,9 +2,9 @@ import pygame
 import sys
 
 
+def play_cutscene(screen,show_endCheck):
 
-def play_cutscene(screen, show_endCheck):
-    import stage3_playGame
+    screen = screen
     pygame.mixer.music.stop()
     pygame.mixer.init()  # 사운드 시스템 초기화
 
@@ -14,23 +14,27 @@ def play_cutscene(screen, show_endCheck):
     pygame.mixer.music.load('../music/cutsceneBGM.mp3')
     pygame.mixer.music.play(-1)
 
-    pygame.display.set_caption("컷신 예시")
+    pygame.display.set_caption("컷신")
     WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 
-    font = pygame.font.SysFont("malgungothic", 40)
+    font_path = "../font/HBIOS-SYS.ttf"
+    font = pygame.font.Font (font_path, 40)
 
     slides = [
         {"image": pygame.image.load("../img/１컷.jpg"), "text": "모든 일은 평화로운 시골의 한 학교에서 시작되었다..."},
         {"image": pygame.image.load("../img/２컷.jpg"), "text": "그곳엔 오래된 전통처럼 키우던 염소가 있었고..."},
         {"image": pygame.image.load("../img/２컷.jpg"), "text": "양아치의 장난으로 염소가 죽은 날, 저주가 깨어났다."},
 
-        {"image": pygame.image.load("../img/３컷.jpg"), "text": "그리고, 주인공은 그 마을로 향한다."},
-        {"image": pygame.image.load("../img/４컷.jpg"), "text": "그리고, 주인공은 그 마을로 향한다."},
+        {"image": pygame.image.load("../img/３컷.jpg"), "text": "양아치와 그의 가족들이 죽었다는 소문이 돌고.."},
+        {"image": pygame.image.load("../img/4컷.jpg"), "text": "얼마 지나지 않아 학교에서 여러명이 죽어나갔다.."},
+        {"image": pygame.image.load("../img/4컷.jpg"), "text": "학교는 얼마 안 가 폐교되었고,"},
+        {"image": pygame.image.load("../img/5컷신.png"), "text": "50년 후, 그 폐교 체험으로 인기를 얻게 되었고.."},
+        {"image": pygame.image.load("../img/5컷신.png"), "text": "호기심에 못 이긴 우리는 그 폐교로 들어가게 된다.."}
 
     ]
 
     def draw_text(text):
-        label = font.render(text, True, (255, 255, 255))
+        label = font.render(text, True, (255, 255, 255)) #antialias은 텍스트 이미지 부드럽게 처리할지 판단
         label_rect = label.get_rect(center=(WIDTH // 2, HEIGHT - 100))
         screen.blit(label, label_rect) # (source, dext) -> (복사할 원본, 복사할 위치)
 
@@ -70,7 +74,10 @@ def play_cutscene(screen, show_endCheck):
                 slide_start_time = pygame.time.get_ticks()
 
     # 컷신 끝나면 다음 스테이지로
-    stage3_playGame.play_Game(screen, show_endCheck)
+    import stage3_play1
+
+    print("컷신 끝! stage3으로")
+    stage3_play1.gamePlay1(screen,show_endCheck)
 
 
 

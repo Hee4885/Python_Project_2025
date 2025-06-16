@@ -199,4 +199,4 @@ def gamePlay1(screen,show_endCheck) :
         keyPress = pygame.key.get_pressed()
         load_player(keyPress,screen,get_object_rect,WIDTH,HEIGHT)
 
-        pygame.display.flip()
+        pygame.display.flip() #화면 업데이트

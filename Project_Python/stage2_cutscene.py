@@ -38,6 +38,11 @@ def play_cutscene(screen,show_endCheck):
         label_rect = label.get_rect(center=(WIDTH // 2, HEIGHT - 100))
         screen.blit(label, label_rect) # (source, dext) -> (복사할 원본, 복사할 위치)
 
+    def draw_text2(text):
+        label = font.render(text, True, (255, 255, 255)) #antialias은 텍스트 이미지 부드럽게 처리할지 판단
+        label_rect = label.get_rect(center=(WIDTH // 2, 900))
+        screen.blit(label, label_rect) # (source, dext) -> (복사할 원본, 복사할 위치)
+
     clock = pygame.time.Clock() #FPS(초당 프레임 수) 제어 객체 -> 초당 최대 60번 루프, 속도 제한
     slide_index = 0 #현재 보여줄 컷신 장면 번호
     slide_start_time = pygame.time.get_ticks() #파이게임 시작된 이후 흐른 시간 / 경과 시간 체크
@@ -77,7 +82,7 @@ def play_cutscene(screen,show_endCheck):
     import stage3_play1
 
     print("컷신 끝! stage3으로")
-    stage3_play1.gamePlay1(screen,show_endCheck)
+    stage3_play1.gamePlay1(screen,show_endCheck,draw_text2)
 
 
 

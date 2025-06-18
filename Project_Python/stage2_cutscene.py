@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 
 def play_cutscene(screen,show_endCheck):
@@ -80,7 +79,6 @@ def play_cutscene(screen,show_endCheck):
 
     # 컷신 끝나면 다음 스테이지로
     import stage3_play1
-
     print("컷신 끝! stage3으로")
     stage3_play1.gamePlay1(screen,show_endCheck,draw_text2)
 

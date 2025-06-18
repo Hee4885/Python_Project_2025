@@ -70,7 +70,7 @@ def how_to_play():
     running = True
     while running:
         screen.fill(BLACK)
-        goBack_button = draw_button("Go Back", 20, 950, 170, 80)
+        goBack_button = draw_button("Go Back", 20, 0, 170, 80)
 
         title = font.render("【게임 방법】", True, WHITE)
         line1 = font.render("[WASD] 키로 이동:", True, WHITE)
@@ -101,7 +101,7 @@ def settings_menu():
         screen.fill(BLACK)
         text1 = font2.render("【설정】", True, WHITE)
         text2 = font3.render(f"음량: {volume}%", True, WHITE)
-        goBack_button = draw_button("Go Back", 20, 950, 230, 80)
+        goBack_button = draw_button("Go Back", 20, 0, 230, 80)
 
         screen.blit(text1, (WIDTH // 2 - 100, HEIGHT // 2 - 400))
         screen.blit(text2, (WIDTH // 2 - 100, HEIGHT // 2))

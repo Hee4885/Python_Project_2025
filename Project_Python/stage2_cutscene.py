@@ -39,7 +39,7 @@ def play_cutscene(screen,show_endCheck):
 
     def draw_text2(text):
         label = font.render(text, True, (255, 255, 255)) #antialias은 텍스트 이미지 부드럽게 처리할지 판단
-        label_rect = label.get_rect(center=(WIDTH // 2, 900))
+        label_rect = label.get_rect(center=(WIDTH // 2, 920))
         screen.blit(label, label_rect) # (source, dext) -> (복사할 원본, 복사할 위치)
 
     clock = pygame.time.Clock() #FPS(초당 프레임 수) 제어 객체 -> 초당 최대 60번 루프, 속도 제한

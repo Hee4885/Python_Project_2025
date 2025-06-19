@@ -38,7 +38,7 @@ def wall_rect(screen,w,get_wall_rect,x,y,move_x,move_y,myImg,show_endCheck,draw_
     if crash_rect.colliderect(right_wall):
         print("오른쪽 벽과 충돌")
         import stage5_play3
-        stage5_play3.gamePlay3(screen, show_endCheck, draw_text2, w, h, load_player,x=100, y=700)
+        stage5_play3.gamePlay3(screen, show_endCheck, draw_text2, w, h, load_player,x=100, y=680)
 
     return blocked #충돌 없음
 
@@ -48,7 +48,7 @@ def wall_rect(screen,w,get_wall_rect,x,y,move_x,move_y,myImg,show_endCheck,draw_
 def gamePlay2(screen, show_endCheck, draw_text2, w, h, load_player,x,y):
     global block
     clock = pygame.time.Clock()
-    corridor_img = pygame.image.load('../img/복도.jpg')
+    corridor_img = pygame.image.load('../img/복도.png')
     corridor_img = pygame.transform.scale(corridor_img, (w, h))
 
     running = True
@@ -76,7 +76,8 @@ def gamePlay2(screen, show_endCheck, draw_text2, w, h, load_player,x,y):
                 show_endCheck(screen)
 
         screen.blit(corridor_img, (0, 0))
+        #장애물 확인용
+        # wall_rect(screen, w, get_wall_rect, x, y, move_x, move_y, myImg, show_endCheck, draw_text2, h, load_player)
         screen.blit(myImg, (x, y))
 
-        clock.tick(120) # 1초에 최대 60번만 루프 돌기
         pygame.display.flip()

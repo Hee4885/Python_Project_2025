@@ -2,18 +2,16 @@ import pygame
 
 pygame.init()
 
-bg_img = pygame.image.load("../img/교실1.jpg")
+bg_img = pygame.image.load("../img/교실1.png")
 
 #폰트
 font_path = '../font/HBIOS-SYS.ttf'
 font = pygame.font.Font(font_path, 30)
 font2 = pygame.font.Font(font_path, 20)
 
-
 # 플레이어 이미지 로드
 img_front = pygame.image.load('../img/앞.png')
 img_front_walk1 = pygame.image.load('../img/앞_걷기1.png')
-
 img_front_walk2 = pygame.image.load('../img/앞_걷기2.png')
 
 img_back = pygame.image.load('../img/뒤.png')
@@ -28,60 +26,58 @@ img_right = pygame.image.load('../img/오른쪽.png')
 img_right_walk1 = pygame.image.load('../img/오른쪽_걷기1.png')
 img_right_walk2 = pygame.image.load('../img/오른쪽_걷기2.png')
 
-#아이템 이미지
+# 아이템 이미지
 img_flash = pygame.image.load('../img/손전등.png')
 
-#아이템 충돌 유무
+# 아이템 충돌 유무
 item_crash = False
 
-#플레이어 동작 프레임
+# 플레이어 동작 프레임
 frame = 0
 frameCount = 0
 
-#플레이어
+# 플레이어
 x, y = 700, 400
 last_moving = ''
 myImg = pygame.image.load('../img/앞.png')
-player_rect = img_front.get_rect()  # 이미지 크기만한 rect 생성 -> 현재 위치를 가짐
-player_rect.topleft = (x, y)  # 캐릭터 초기 위치 지정 -> top left corner", 즉 왼쪽 위 꼭짓점 / Rect 위치 지정 또는 업데이트
-crash_rect = pygame.Rect(x,y,10,10)
+player_rect = img_front.get_rect()
+player_rect.topleft = (x, y)
+crash_rect = pygame.Rect(x, y, 10, 10)
 
+iImg = pygame.image.load('../img/손전등.png')
 
-def draw_item (screen, ix=800,iy=600) :
+def draw_item(screen, ix=800, iy=600):
     global item_crash
-    if item_crash :
+    if item_crash:
         return None
-    else :
-        iImg = pygame.image.load('../img/손전등.png')
-        # 충돌 감지를 위한 작은 사각형 Rect 생성
-        i_rect = pygame.Rect(ix, iy,iImg.get_width()//5, iImg.get_height()//5)
-        # 아이템 이미지 화면에 표시
-        screen.blit(iImg,(ix,iy))
+    i_rect = pygame.Rect(ix, iy, iImg.get_width() // 5, iImg.get_height() // 5)
+    screen.blit(iImg, (ix, iy))
+    return i_rect
 
-    return i_rect #충돌 감지를 위한 반환
+def load_player(item_use, keyPress, screen, get_object_rect, w, h, draw_text2, show_endCheck, show_dialog, friend_obj):
+    global x, y, frame, frameCount, myImg, player_rect, last_moving, crash_rect, item_crash
 
-def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,show_dialog,friend_obj) :
-    global x,y,frame,frameCount,myImg,player_rect,last_moving,crash_rect,item_crash # 값이 누적되야 되기 때문에 전역 변수로 관리
-    # 이동 처리
+    player_img = pygame.image.load("../img/앞.png")
+    player_rect = player_img.get_rect(topleft=(x, y))
+
+
     speed = 0
     keys = pygame.key.get_pressed()
     move_x, move_y = 0, 0
     is_moving = False
-    #현재 modifier 키 상태 가져오기
     mods = pygame.key.get_mods()
 
-    # Shift 키가 눌렸는지 확인 -> pygame.key.get_mods()는 비트 플래그 값을 반환. 1이면 참
     if mods & pygame.KMOD_SHIFT:
-        print("Shift 눌림!")
-        speed = 3
-        frameCount = 15
-    else :
-        print("Shift 안 눌림!")
-        speed = 1
-        frameCount = 30
+        print("Shift 누르림!")
+        speed = 12
+        frameCount = 3.6
+    else:
+        print("Shift 안 누르림!")
+        speed = 9
+        frameCount = 7.2
+
     if keys[pygame.K_w]:
         move_y = -speed
-        # 파이썬 삼항 연산자 : A if 조건 else B -> 참이면 A, 거짓이면 B
         myImg = img_back_walk1 if frame < frameCount else img_back_walk2
         last_moving = 'up'
         is_moving = True
@@ -111,28 +107,26 @@ def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,sh
         elif last_moving == 'left':
             myImg = img_left
 
-
-
-    crash_rect = pygame.Rect(x+move_x,y+move_y, myImg.get_width(), myImg.get_height()) #이동할 위치에 캐릭터의 위치 사본
-
-
-    #화면 경계 충돌 감지 -> x,는 0보다 작아질 수 없고, 화면 너비와 높이를 넘지 앟음
+    crash_rect = pygame.Rect(x + move_x, y + move_y, myImg.get_width(), myImg.get_height())
     x = max(0, min(x, w - myImg.get_width()))
     y = max(0, min(y, h - myImg.get_height()))
 
-    f_rect = friend_obj(screen)  # 친구 객체 Rect 가져오기
+    f_rect = pygame.Rect(0, 0, 0, 0)
+    if friend_obj:
+        try:
+            f_rect = friend_obj(screen)
+        except Exception as e:
+            print(f"friend_obj error: {e}")
+            f_rect = pygame.Rect(0, 0, 0, 0)
 
-    #충돌 감지
-    blocked = False
-    #문 위치
     obstacles = get_object_rect(w)
-    door1 = obstacles[-2] #2번째로 마지막 요소
-    door2 = obstacles[-1] #1번째로 마지막 요소
+    door1 = obstacles[-2]
+    door2 = obstacles[-1]
     i_rect = draw_item(screen)
-    f_rect = friend_obj(screen)
-    for obj in get_object_rect(w) : #object 리스트에 있는 위치들 비교
-        # 이동한 위치가 리스트에 있는 위치와 같으면 / colliderect은 요소들 간에 겹침을 판단함 / 겹치면 True, 아니면 False 리턴
-        if crash_rect.colliderect(obj) :
+
+    blocked = False
+    for obj in get_object_rect(w):
+        if crash_rect.colliderect(obj):
             blocked = True
             print("장애물과 충돌")
             break
@@ -140,7 +134,6 @@ def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,sh
     if crash_rect.colliderect(f_rect):
         blocked = True
         print("친구와 충돌")
-        # 대화창
         show_dialog("f", w, h, screen, draw_text2)
 
     if i_rect and crash_rect.colliderect(i_rect):
@@ -148,13 +141,12 @@ def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,sh
         print("손전등과 충돌")
         item_crash = True
 
-
     if crash_rect.colliderect(door1):
-        if not item_crash :
-            door_lock_text = font2.render("문이 잠겨 있다..", True, (255, 255, 255))
+        if not item_crash or not item_use:
+            door_lock_text = font2.render("앞이 잘 안 보여 열 수 없다..", True, (255, 255, 255))
             text_rect = door_lock_text.get_rect(midbottom=(crash_rect.centerx, crash_rect.top - 25))
             screen.blit(door_lock_text, text_rect)
-        else :
+        else:
             import stage4_play2
             stage4_play2.gamePlay2(screen, show_endCheck, draw_text2, w, h, load_player, x=100, y=500)
 
@@ -163,17 +155,14 @@ def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,sh
         text_rect = door_lock_text.get_rect(midbottom=(crash_rect.centerx, crash_rect.top - 25))
         screen.blit(door_lock_text, text_rect)
 
-    #장애물이 없다면
-    if not blocked :
-        # 이미 이동한 위치
+    if not blocked:
         x += move_x
         y += move_y
 
-
-    #게임 루프가 한 번 돌 때 마다 1씩 증가, 60프레임은 1초
     frame += 1
-    if frame>=frameCount*2 :
+    if frame >= frameCount * 2:
         frame = 0
 
-    screen.blit(myImg,(x,y))
+    screen.blit(myImg, (x, y))
 
+    return x, y, myImg, move_x, move_y

@@ -78,7 +78,7 @@ def how_to_play():
         line3 = font.render("     (화살표 방향별로 캐릭터 이동)", True, WHITE)
         line4 = font.render("[F] 키: 대화 및 상호작용", True, WHITE)
         line5 = font.render("[e] 키: 인벤토리 창 띄우기", True, WHITE)
-        line6 = font.render("space 바 : 대화 및 컷신 건너뛰기", True, WHITE)
+        line6 = font.render("[shift] 키 : 달리기", True, WHITE)
 
         screen.blit(title, (WIDTH // 2 - 50, HEIGHT // 2 - 400))
         screen.blit(line1, (WIDTH // 2 - 300, HEIGHT // 2 - 200))

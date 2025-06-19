@@ -3,7 +3,7 @@ import player_module
 
 pygame.init()
 
-bg_img = pygame.image.load("../img/교실1.jpg")
+bg_img = pygame.image.load("../img/교실1.png")
 
 #폰트
 font_path = '../font/HBIOS-SYS.ttf'
@@ -28,9 +28,6 @@ img_left_walk2 = pygame.image.load('../img/왼쪽_걷기2.png')
 img_right = pygame.image.load('../img/오른쪽.png')
 img_right_walk1 = pygame.image.load('../img/오른쪽_걷기1.png')
 img_right_walk2 = pygame.image.load('../img/오른쪽_걷기2.png')
-
-#아이템 이미지
-img_flash = pygame.image.load('../img/손전등.png')
 
 #아이템 충돌 유무
 item_crash = False
@@ -61,12 +58,12 @@ def following_players(keyPress, screen, w, h, show_endCheck, x, y):
     # Shift 키가 눌렸는지 확인 -> pygame.key.get_mods()는 비트 플래그 값을 반환. 1이면 참
     if mods & pygame.KMOD_SHIFT:
         print("Shift 눌림!")
-        speed = 3
-        frameCount = 15
+        speed = 9
+        frameCount = 7.2
     else :
         print("Shift 안 눌림!")
-        speed = 1
-        frameCount = 30
+        speed = 6
+        frameCount = 15
     if keys[pygame.K_w]:
         move_y = -speed
         # 파이썬 삼항 연산자 : A if 조건 else B -> 참이면 A, 거짓이면 B

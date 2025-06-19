@@ -1,14 +1,11 @@
 import pygame
-
-from player_module import load_player,draw_item
-
-#아이템 충돌 유무
-item_crash = False
+import player_module  # 전체 모듈 import
 
 #대화 창 반복 여부
 play_dialog = False
 
 bg_img = pygame.image.load('../img/교실1.jpg')
+
 
 def show_dialog(speaker, w, h, screen, draw_text2):
     global  play_dialog
@@ -35,7 +32,7 @@ def show_dialog(speaker, w, h, screen, draw_text2):
 
                 # 4. 업데이트 및 대기
                 pygame.display.update(dialog_rect)
-                pygame.time.delay(1500)
+                pygame.time.delay(2000)
             # 대화 다 끝났으면 대화창 제거
             pygame.display.flip()
 
@@ -60,28 +57,28 @@ def friend_obj (screen) :
 def get_object_rect(w) :
     obstacle = [
         # 책상 (왼쪽 열)
-        pygame.Rect(280, 360, 100, 70),
-        pygame.Rect(280, 500, 100, 70),
-        pygame.Rect(280, 645, 100, 70),
-        pygame.Rect(280, 800, 100, 70),
+        pygame.Rect(280, 360, 100, 10),
+        pygame.Rect(280, 500, 100, 10),
+        pygame.Rect(280, 645, 100, 10),
+        pygame.Rect(280, 800, 100, 10),
 
         # 책상 (왼쪽 중앙 열)
-        pygame.Rect(500, 360, 100, 70),
-        pygame.Rect(500, 500, 100, 70),
-        pygame.Rect(500, 645, 100, 70),
-        pygame.Rect(500, 800, 100, 70),
+        pygame.Rect(500, 360, 100, 10),
+        pygame.Rect(500, 500, 100, 10),
+        pygame.Rect(500, 645, 100, 10),
+        pygame.Rect(500, 800, 100, 10),
 
         # 책상 (오른쪽 중앙 열)
-        pygame.Rect(1055, 360, 100, 70),
-        pygame.Rect(1055, 500, 100, 70),
-        pygame.Rect(1055, 645, 100, 70),
-        pygame.Rect(1055, 800, 100, 70),
+        pygame.Rect(1055, 360, 100, 10),
+        pygame.Rect(1055, 500, 100, 10),
+        pygame.Rect(1055, 645, 100, 10),
+        pygame.Rect(1055, 800, 100, 10),
 
         # 책상 (오른쪽 열)
-        pygame.Rect(1290, 360, 100, 70),
-        pygame.Rect(1290, 500, 100, 70),
-        pygame.Rect(1290, 645, 100, 70),
-        pygame.Rect(1290, 800, 100, 70),
+        pygame.Rect(1290, 360, 100, 10),
+        pygame.Rect(1290, 500, 100, 10),
+        pygame.Rect(1290, 645, 100, 10),
+        pygame.Rect(1290, 800, 100, 10),
 
         # 교탁 (중앙)
         pygame.Rect((w // 2) - 120, 295, 200, 20),
@@ -102,10 +99,12 @@ def object_rect(screen,w,get_object_rect) :
         pygame.draw.rect(screen,(0,0,255),rect) #그릴 배경, 색상, 위치 및 크기 요소
 
 
-
+#아이템을 쓸 것인지 확인
+item_use = False
 
 #stage1에 있는 함수에 대한 의존성을 버리기 위해 매개변수로 함수 받기
 def gamePlay1(screen,show_endCheck,draw_text2) :
+    global  item_use
     pygame.mixer.music.stop()
     pygame.mixer.init()
 
@@ -118,19 +117,32 @@ def gamePlay1(screen,show_endCheck,draw_text2) :
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
                 show_endCheck(screen)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e and player_module.item_crash:
+                    print("손전등 사용!")
+                    item_use = True
 
         get_object_rect(WIDTH)
         object_rect(screen,WIDTH,get_object_rect) # 장애물 생성 함수
         background(screen,WIDTH,HEIGHT) # 배경 생성 함수
 
-
-
         friend_obj(screen) #친구 생성 함수
-        draw_item(screen) #손전등 생성 함수
 
+        keyPress = pygame.key.get_pressed()
+
+        dark_overlay = pygame.Surface((WIDTH, HEIGHT))  # 전체 화면 사이즈의 Surface 생성
+        dark_overlay.fill((0, 0, 0))  # 검정색으로 채우기
+
+        # === 어두운 레이어: 손전등을 아직 못 먹었으면 화면 어둡게 ===
+        if not player_module.item_crash or not item_use:
+            dark_overlay.set_alpha(180)  # 어두운 화면
+        else:
+            dark_overlay.set_alpha(0)  # 밝은 화면
 
         # 캐릭터 이동 처리
-        keyPress = pygame.key.get_pressed()
-        load_player(keyPress, screen, get_object_rect, WIDTH, HEIGHT, draw_text2, show_endCheck,show_dialog,friend_obj,draw_item)
+        player_module.load_player(keyPress, screen, get_object_rect, WIDTH, HEIGHT, draw_text2, show_endCheck,show_dialog,friend_obj)
+
+        #손전등 밝기 레이어
+        screen.blit(dark_overlay, (0, 0))  # 화면 위에 덮기
 
         pygame.display.flip() #화면 업데이트

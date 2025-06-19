@@ -1,4 +1,5 @@
 import pygame
+import player_module
 
 pygame.init()
 
@@ -39,7 +40,7 @@ frame = 0
 frameCount = 0
 
 #플레이어
-x, y = 700, 400
+x, y = 200,300
 last_moving = ''
 myImg = pygame.image.load('../img/앞.png')
 player_rect = img_front.get_rect()  # 이미지 크기만한 rect 생성 -> 현재 위치를 가짐
@@ -47,24 +48,11 @@ player_rect.topleft = (x, y)  # 캐릭터 초기 위치 지정 -> top left corne
 crash_rect = pygame.Rect(x,y,10,10)
 
 
-def draw_item (screen, ix=800,iy=600) :
-    global item_crash
-    if item_crash :
-        return None
-    else :
-        iImg = pygame.image.load('../img/손전등.png')
-        # 충돌 감지를 위한 작은 사각형 Rect 생성
-        i_rect = pygame.Rect(ix, iy,iImg.get_width()//5, iImg.get_height()//5)
-        # 아이템 이미지 화면에 표시
-        screen.blit(iImg,(ix,iy))
-
-    return i_rect #충돌 감지를 위한 반환
-
-def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,show_dialog,friend_obj) :
-    global x,y,frame,frameCount,myImg,player_rect,last_moving,crash_rect,item_crash # 값이 누적되야 되기 때문에 전역 변수로 관리
+def following_players(keyPress, screen, w, h, show_endCheck, x, y):
+    global frame,frameCount,myImg,player_rect,last_moving,crash_rect,item_crash # 값이 누적되야 되기 때문에 전역 변수로 관리
     # 이동 처리
     speed = 0
-    keys = pygame.key.get_pressed()
+    keys = keyPress
     move_x, move_y = 0, 0
     is_moving = False
     #현재 modifier 키 상태 가져오기
@@ -120,54 +108,7 @@ def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,sh
     x = max(0, min(x, w - myImg.get_width()))
     y = max(0, min(y, h - myImg.get_height()))
 
-    f_rect = friend_obj(screen)  # 친구 객체 Rect 가져오기
-
-    #충돌 감지
-    blocked = False
-    #문 위치
-    obstacles = get_object_rect(w)
-    door1 = obstacles[-2] #2번째로 마지막 요소
-    door2 = obstacles[-1] #1번째로 마지막 요소
-    i_rect = draw_item(screen)
-    f_rect = friend_obj(screen)
-    for obj in get_object_rect(w) : #object 리스트에 있는 위치들 비교
-        # 이동한 위치가 리스트에 있는 위치와 같으면 / colliderect은 요소들 간에 겹침을 판단함 / 겹치면 True, 아니면 False 리턴
-        if crash_rect.colliderect(obj) :
-            blocked = True
-            print("장애물과 충돌")
-            break
-
-    if crash_rect.colliderect(f_rect):
-        blocked = True
-        print("친구와 충돌")
-        # 대화창
-        show_dialog("f", w, h, screen, draw_text2)
-
-    if i_rect and crash_rect.colliderect(i_rect):
-        blocked = True
-        print("손전등과 충돌")
-        item_crash = True
-
-
-    if crash_rect.colliderect(door1):
-        if not item_crash :
-            door_lock_text = font2.render("문이 잠겨 있다..", True, (255, 255, 255))
-            text_rect = door_lock_text.get_rect(midbottom=(crash_rect.centerx, crash_rect.top - 25))
-            screen.blit(door_lock_text, text_rect)
-        else :
-            import stage4_play2
-            stage4_play2.gamePlay2(screen, show_endCheck, draw_text2, w, h, load_player, x=100, y=500)
-
-    if crash_rect.colliderect(door2):
-        door_lock_text = font2.render("문이 잠겨 있다..", True, (255, 255, 255))
-        text_rect = door_lock_text.get_rect(midbottom=(crash_rect.centerx, crash_rect.top - 25))
-        screen.blit(door_lock_text, text_rect)
-
-    #장애물이 없다면
-    if not blocked :
-        # 이미 이동한 위치
-        x += move_x
-        y += move_y
+    # f_rect = friend_obj(screen)  # 친구 객체 Rect 가져오기
 
 
     #게임 루프가 한 번 돌 때 마다 1씩 증가, 60프레임은 1초
@@ -177,3 +118,4 @@ def load_player(keyPress,screen, get_object_rect,w,h,draw_text2,show_endCheck,sh
 
     screen.blit(myImg,(x,y))
 
+    return x,y,myImg,move_x,move_y
